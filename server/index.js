@@ -14,6 +14,7 @@ app.use(cors());
 connectDB();
 
 app.use("/api/auth", require("./routes/auth"));
+app.use("/api/wallet", require("./routes/wallet"));
 
 // Serve static assets in production (optional - for deployment later)
 // if (process.env.NODE_ENV === 'production') {
