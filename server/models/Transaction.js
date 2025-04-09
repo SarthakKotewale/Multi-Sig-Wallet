@@ -16,7 +16,7 @@ const TransactionSchema = new mongoose.Schema({
   },
   recipient: {
     type: String, //another wallet ID or just a name
-    required: true,
+    // required: true,
   },
   status: {
     type: String, // "pending", "approved", "rejected"

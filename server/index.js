@@ -15,7 +15,7 @@ connectDB();
 
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/wallet", require("./routes/wallet"));
-
+app.use("/api/transaction", require("./routes/transaction"));
 // Serve static assets in production (optional - for deployment later)
 // if (process.env.NODE_ENV === 'production') {
 //   // Set static folder
