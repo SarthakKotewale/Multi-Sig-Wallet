@@ -23,4 +23,7 @@ router.put(
   auth,
   transactionController.rejectTransaction
 );
+
+router.get("/transactions", auth, transactionController.getTransactions);
+
 module.exports = router;

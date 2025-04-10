@@ -111,3 +111,21 @@ exports.rejectTransaction = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
+
+exports.getTransactions = async (req, res) => {
+  const wallet = await Wallet.findOne();
+  try {
+    if (!wallet) {
+      return res.status(404).json({ msg: "Wallet not found..." });
+    }
+
+    if (!wallet.owners.includes(req.user.id)) {
+      return res.status(401).json({ msg: "User not authorised... " });
+    }
+    const transactions = await Transaction.find({ wallet: wallet.id });
+    res.json(transactions);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server error");
+  }
+};
