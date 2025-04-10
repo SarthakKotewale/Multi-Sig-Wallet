@@ -32,3 +32,44 @@ exports.createTransaction = async (req, res) => {
     res.status(500).send("Server Error");
   }
 };
+
+exports.approveTransaction = async (req, res) => {
+  const transaction = await Transaction.findById(req.params.id);
+  try {
+    if (!transaction) {
+      return res.status(404).json({ msg: "Transaction not found... " });
+    }
+
+    const wallet = await Wallet.findById(transaction.wallet);
+    if (!wallet) {
+      return res.status(404).json({ msg: "Wallet not found... " });
+    }
+
+    if (!wallet.owners.includes(req.user.id)) {
+      return res.status(401).json({ msg: "User not authorised... " });
+    }
+
+    if (transaction.approvals.includes(req.user.id)) {
+      return res
+        .status(400)
+        .json({ msg: "Transaction already approved by this user... " });
+    }
+    if (transaction.rejections.includes(req.user.id)) {
+      return res
+        .status(400)
+        .json({ msg: "Cannot approve a rejected transaction" });
+    }
+    transaction.approvals.push(req.user.id);
+    await transaction.save();
+
+    if (transaction.approvals.length >= wallet.threshold) {
+      transaction.status = "approved";
+      await transaction.save();
+    }
+    res.json(transaction);
+  } catch (err) {
+    console.log(err);
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+};

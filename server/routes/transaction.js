@@ -13,4 +13,9 @@ router.post(
   validator(transactionValidation),
   transactionController.createTransaction
 );
+router.put(
+  "/approve-transaction/:id",
+  auth,
+  transactionController.approveTransaction
+);
 module.exports = router;
