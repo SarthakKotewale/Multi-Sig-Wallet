@@ -18,4 +18,9 @@ router.put(
   auth,
   transactionController.approveTransaction
 );
+router.put(
+  "/reject-transaction/:id",
+  auth,
+  transactionController.rejectTransaction
+);
 module.exports = router;
